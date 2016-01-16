@@ -5,4 +5,4 @@ Laravel FTP wrapper for Laravel
 
 Install package with:
 
-```composer require dennissmink/LaravelFtp```
+```composer require dennissmink/laravel-ftp```
