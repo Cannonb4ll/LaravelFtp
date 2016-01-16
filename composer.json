@@ -1,5 +1,6 @@
 {
     "name": "dennissmink/laravel-ftp",
+    "version" : "1.0",
     "authors": [
         {
             "name": "Dennis Smink",
