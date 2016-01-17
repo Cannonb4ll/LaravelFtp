@@ -26,11 +26,12 @@ $ftp = ftp($host, $user, $pass, $optionalport);
 Then, check if your connection was succesfull:
 
 ```
-if($ftp){
-    // Do your stuff here, connection has been made.
-}else{
+if(!$ftp){
     // Connection failed
-}   
+    return 'Error while connecting to the FTP server';
+}
+
+// Do your stuff
 ```
 
 **Methods**
@@ -42,6 +43,7 @@ $ftp->all('folder'); // Returns all the files of the directory folder (Collectio
 
 $ftp->get('filename.txt') // Returns the content of the file, can also be: get('directory/filename.txt')
 $ftp->save('filename.txt', 'content file'); // Save file 'filename.txt' with content 'content file', returns content if success
+$ftp->rename('oldname.txt', 'newname.txt'); // Renames file or directory
 ```
 
 

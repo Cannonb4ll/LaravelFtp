@@ -2,8 +2,6 @@
 
 namespace LaravelFtp;
 
-use Illuminate\Support\Collection;
-
 class FTP
 {
     private $connection;
@@ -74,6 +72,7 @@ class FTP
                 return false;
             }
         }
+
         return false;
     }
 
@@ -87,7 +86,7 @@ class FTP
     public function save($file, $content)
     {
         $tempHandle = fopen('php://temp', 'r+');
-        fwrite($tempHandle, stripslashes($content));
+        fwrite($tempHandle, $content);
         rewind($tempHandle);
 
         if (@ftp_fput($this->connection, $file, $tempHandle, FTP_ASCII, 0)) {
@@ -95,6 +94,18 @@ class FTP
         } else {
             return false;
         }
+    }
+
+    /**
+     * public function rename
+     *
+     * @param $old
+     * @param $new
+     * @return bool
+     */
+    public function rename($old, $new)
+    {
+        return @ftp_rename($this->connection, $old, $new);
     }
 
     /**
