@@ -35,7 +35,7 @@ if($ftp){
 
 **Methods**
 
-> Display files
+*Display files*
 ```
 $ftp->all(); // Returns all the files of the users root files
 $ftp->all('folder'); // Returns all the files of the directory folder
@@ -45,12 +45,12 @@ $ftp->get('filename.txt') // Returns the content of the file, can also be like: 
 ```
 
 
-> Create files/directories
+*Create files/directories*
 ```
 $ftp->createDirectory('directory name');
 ```
 
-> Delete files/directories
+*Delete files/directories*
 ```
 $ftp->deleteDirectory('directory name');
 ```
