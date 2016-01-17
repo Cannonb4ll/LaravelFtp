@@ -35,13 +35,13 @@ if($ftp){
 
 **Methods**
 
-*Display files*
+*General file functions*
 ```
 $ftp->all(); // Returns all the files of the users root files (Collection)
 $ftp->all('folder'); // Returns all the files of the directory folder (Collection)
 
 $ftp->get('filename.txt') // Returns the content of the file, can also be: get('directory/filename.txt')
-
+$ftp->save('filename.txt', 'content file'); // Save file 'filename.txt' with content 'content file', returns content if success
 ```
 
 
@@ -57,3 +57,7 @@ $ftp->deleteFile('filename.txt'); // Deletes a file with the name 'filename.txt'
 $ftp->deleteDirectory('directory name'); // Removes a directory with the name 'directory name' (And its contents..)
 $ftp->emptyDirectory('directory name'); // Emptys a directory but keeps the directory itself
 ```
+
+## Links
+
+Packagist: https://packagist.org/packages/dennissmink/laravel-ftp

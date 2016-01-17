@@ -78,6 +78,26 @@ class FTP
     }
 
     /**
+     * public function save
+     *
+     * @param $file
+     * @param $content
+     * @return bool
+     */
+    public function save($file, $content)
+    {
+        $tempHandle = fopen('php://temp', 'r+');
+        fwrite($tempHandle, stripslashes($content));
+        rewind($tempHandle);
+
+        if (@ftp_fput($this->connection, $file, $tempHandle, FTP_ASCII, 0)) {
+            return $this->get($file);
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * public function createFile
      *
      * @param $directory
