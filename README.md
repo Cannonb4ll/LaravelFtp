@@ -37,20 +37,23 @@ if($ftp){
 
 *Display files*
 ```
-$ftp->all(); // Returns all the files of the users root files
-$ftp->all('folder'); // Returns all the files of the directory folder
+$ftp->all(); // Returns all the files of the users root files (Collection)
+$ftp->all('folder'); // Returns all the files of the directory folder (Collection)
 
-$ftp->get('filename.txt') // Returns the content of the file, can also be like: get('directory/filename.txt')
+$ftp->get('filename.txt') // Returns the content of the file, can also be: get('directory/filename.txt')
 
 ```
 
 
 *Create files/directories*
 ```
-$ftp->createDirectory('directory name');
+$ftp->createFile('filename.txt'); // Creates a file with the name 'filename.txt'
+$ftp->createDirectory('directory name'); // Creates a directory 'directory name'
 ```
 
 *Delete files/directories*
 ```
-$ftp->deleteDirectory('directory name');
+$ftp->deleteFile('filename.txt'); // Deletes a file with the name 'filename.txt'
+$ftp->deleteDirectory('directory name'); // Removes a directory with the name 'directory name' (And its contents..)
+$ftp->emptyDirectory('directory name'); // Emptys a directory but keeps the directory itself
 ```

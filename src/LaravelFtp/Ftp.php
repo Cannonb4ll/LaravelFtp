@@ -77,6 +77,13 @@ class FTP
         return false;
     }
 
+    /**
+     * public function createFile
+     *
+     * @param $directory
+     * @param $name
+     * @return bool
+     */
     public function createFile($directory, $name)
     {
         $temp = tmpfile();
@@ -84,18 +91,101 @@ class FTP
         return @ftp_fput($this->connection, $directory . '/' . $name, $temp, FTP_ASCII);
     }
 
+    /**
+     * public function deleteFile
+     *
+     * @param $file
+     * @return bool
+     */
     public function deleteFile($file)
     {
         return @ftp_delete($this->connection, str_replace('../', '', $file));
     }
 
+    /**
+     * Public function createDirectory
+     *
+     * @param $directory
+     * @return string
+     */
     public function createDirectory($directory)
     {
         return @ftp_mkdir($this->connection, $directory);
     }
 
+    /**
+     * Public function deleteDirectory
+     *
+     * @param $directory
+     * @return bool
+     */
     public function deleteDirectory($directory)
     {
-        return @ftp_rmdir($this->connection, $directory);
+        if (!$directory) {
+            return false;
+        }
+
+        $dst_dir = preg_replace('/\\/\$/', '', $directory);
+        $ar_files = $this->all($dst_dir);
+
+        if ($ar_files) {
+            foreach ($ar_files as $st_file) {
+                if (!empty($st_file)) {
+                    $fl_file = $dst_dir . '/' . $st_file;
+
+                    $getExtensions = pathinfo($fl_file);
+
+                    if (!array_key_exists('extension', $getExtensions)) {
+                        $this->deleteDirectory($fl_file); // Folder
+                    } else {
+                        $this->deleteFile($fl_file); // File
+                    }
+                }
+            }
+
+            $delete = @ftp_rmdir($this->connection, $dst_dir);
+
+            if ($delete) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * public function emptyDirectory
+     *
+     * @param $directory
+     * @return bool
+     */
+    public function emptyDirectory($directory)
+    {
+        if (!$directory) {
+            return false;
+        }
+
+        $dst_dir = preg_replace('/\\/\$/', '', $directory);
+        $ar_files = $this->all($dst_dir);
+
+        if ($ar_files) {
+            foreach ($ar_files as $st_file) {
+                if (!empty($st_file)) {
+                    $fl_file = $dst_dir . '/' . $st_file;
+
+                    $getExtensions = pathinfo($fl_file);
+
+                    if (!array_key_exists('extension', $getExtensions)) {
+                        $this->deleteDirectory($fl_file); // Folder
+                    } else {
+                        $this->deleteFile($fl_file); // File
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }
