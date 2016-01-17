@@ -15,6 +15,9 @@
     "autoload": {
         "psr-0": {
             "LaravelFtp": "src/"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     }
 }

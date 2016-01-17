@@ -20,7 +20,7 @@ composer require dennissmink/laravel-ftp dev-master
 Initiate a new FTP client like so:
 
 ```
-$ftp = new Ftp($host, $user, $pass, $optionalport);
+$ftp = ftp($host, $user, $pass, $optionalport);
 ```
 
 Then, check if your connection was succesfull:
