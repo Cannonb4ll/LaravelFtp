@@ -1,9 +1,9 @@
 # LaravelFtp
-Laravel FTP wrapper for Laravel (or any other project that has composer)
+Laravel FTP client (or any other project that utilises has composer)
 
 This project is just called LaravelFtp because I am holding this package to the conventions Laravel itself uses, they are great and easy.
 
-It also utilises the collection package, files are returned as collection so you can use the Collection function from Laravel.
+It also utilises the collection package, files are returned as collection so you can use the Collection functions from Laravel.
 
 # Usage
 
