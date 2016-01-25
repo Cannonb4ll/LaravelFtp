@@ -109,6 +109,16 @@ class FTP
     }
 
     /**
+     * public function directory
+     *
+     * @return string
+     */
+    public function directory()
+    {
+        return ftp_pwd($this->connection);
+    }
+
+    /**
      * public function createFile
      *
      * @param $directory
@@ -219,4 +229,21 @@ class FTP
 
         return false;
     }
+
+    /**
+     * public function uploadFile
+     *
+     *
+     * @param    string    $fileToUpload	Het bestand wat geupload moet worden
+     * @param    string    $fileUrl			Het relatieve pad
+     * @return   string             		Geeft true weer als het bestand geupload kon worden, anders false
+     */
+    public function uploadFile( $fileToUpload, $fileUrl){
+        if (ftp_put($this->connection, $fileToUpload, $fileUrl, FTP_ASCII)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
