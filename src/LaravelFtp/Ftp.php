@@ -6,6 +6,8 @@ class FTP
 {
     private $connection;
 
+    private $mode;
+
     /**
      * public function __construct
      *
@@ -15,8 +17,10 @@ class FTP
      * @param    string $pass
      * @return    boolean
      */
-    public function __construct($host, $user, $pass, $port = 21)
+    public function __construct($host, $user, $pass, $port = 21, $mode = FTP_ASCII)
     {
+        $this->mode = $mode;
+
         if ($this->connection = @ftp_connect($host, ($port != 21) ? $port : 21)) {
             if (@ftp_login($this->connection, $user, $pass)) {
                 ftp_pasv($this->connection, true);
@@ -64,7 +68,7 @@ class FTP
         if ($sizeFile > 512000) { // 512 000 KB
             return 'This file is too big to read, maximum filesize allowed to the browser: 512KB';
         } else {
-            if (@ftp_fget($this->connection, $tempHandle, $file, FTP_ASCII, 0)) {
+            if (@ftp_fget($this->connection, $tempHandle, $file, $this->mode, 0)) {
                 rewind($tempHandle);
                 $total = stream_get_contents($tempHandle);
                 return $total;
@@ -89,7 +93,7 @@ class FTP
         fwrite($tempHandle, $content);
         rewind($tempHandle);
 
-        if (@ftp_fput($this->connection, $file, $tempHandle, FTP_ASCII, 0)) {
+        if (@ftp_fput($this->connection, $file, $tempHandle, $this->mode, 0)) {
             return $this->get($file);
         } else {
             return false;
@@ -129,7 +133,7 @@ class FTP
     {
         $temp = tmpfile();
 
-        return @ftp_fput($this->connection, $directory . '/' . $name, $temp, FTP_ASCII);
+        return @ftp_fput($this->connection, $directory . '/' . $name, $temp, $this->mode);
     }
 
     /**
@@ -259,7 +263,7 @@ class FTP
      * @return   string             		Geeft true weer als het bestand geupload kon worden, anders false
      */
     public function uploadFile( $fileToUpload, $fileUrl){
-        if (ftp_put($this->connection, $fileToUpload, $fileUrl, FTP_ASCII)) {
+        if (ftp_put($this->connection, $fileToUpload, $fileUrl, $this->mode)) {
             return true;
         } else {
             return false;
