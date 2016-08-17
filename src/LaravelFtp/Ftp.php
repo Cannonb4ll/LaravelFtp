@@ -263,7 +263,7 @@ class FTP
      * @return   string             		Geeft true weer als het bestand geupload kon worden, anders false
      */
     public function uploadFile( $fileToUpload, $fileUrl){
-        if (ftp_put($this->connection, $fileToUpload, $fileUrl, $this->mode)) {
+        if (@ftp_put($this->connection, $fileToUpload, $fileUrl, $this->mode)) {
             return true;
         } else {
             return false;
