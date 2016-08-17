@@ -154,6 +154,26 @@ class FTP
         return @ftp_mkdir($this->connection, $directory);
     }
 
+    public function createDirectoryRecursive($path)
+    {
+        $dir=explode("/", $path);
+        $path="";
+        $ret = true;
+
+        for ($i=0;$i<count($dir);$i++)
+        {
+            $path.="/".$dir[$i];
+            if(!@ftp_chdir($this->connection,$path)){
+                @ftp_chdir($this->connection,"/");
+                if(!@ftp_mkdir($this->connection,$path)){
+                    $ret=false;
+                    break;
+                }
+            }
+        }
+        return $ret;
+    }
+
     /**
      * Public function deleteDirectory
      *
