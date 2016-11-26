@@ -98,7 +98,7 @@ class FTP
             return 'This file is too big to read, maximum filesize allowed to the browser: 512KB';
         }
 
-        if (@ftp_fget($this->connection, $localFile, $remoteFile, $this->mode, 0)) {
+        if (@ftp_get($this->connection, $localFile, $remoteFile, $this->mode, 0)) {
             return true;
         }
 
