@@ -183,6 +183,22 @@ class FTP
         return @ftp_mkdir($this->connection, $directory);
     }
 
+    /**
+     * Check if $directory actually is a directory
+     * 
+     * @param $directory
+     *
+     * @return bool
+     */
+    public function isDirectory($directory)
+    {
+        if (ftp_nlist($this->connection, $directory)) {
+            return true;
+        }
+
+        return false;
+    }
+
     public function createDirectoryRecursive($path)
     {
         $dir=explode("/", $path);
