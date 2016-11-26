@@ -15,7 +15,8 @@ class FTP
      * @param    string $host
      * @param    string $user
      * @param    string $pass
-     * @return    boolean
+     * @param int       $port
+     * @param int       $mode
      */
     public function __construct($host, $user, $pass, $port = 21, $mode = FTP_ASCII)
     {
@@ -75,6 +76,30 @@ class FTP
             } else {
                 return false;
             }
+        }
+
+        return false;
+    }
+
+    /**
+     * public function download
+     *
+     *
+     * @param string $localFile
+     * @param string $remoteFile
+     * @param int    $maxSize
+     *
+     * @return string
+     */
+    public function download($localFile = '', $remoteFile = '', $maxSize = 512000)
+    {
+        $sizeFile = $this->size($remoteFile);
+        if ($sizeFile > $maxSize) { // 512 000 KB
+            return 'This file is too big to read, maximum filesize allowed to the browser: 512KB';
+        }
+
+        if (@ftp_fget($this->connection, $localFile, $remoteFile, $this->mode, 0)) {
+            return true;
         }
 
         return false;
