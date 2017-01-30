@@ -23,12 +23,18 @@ class FTP
         $this->mode = $mode;
 
         if ($this->connection = @ftp_connect($host, ($port != 21) ? $port : 21)) {
-            if (@ftp_login($this->connection, $user, $pass)) {
-                ftp_pasv($this->connection, true);
-                return true;
+
+            try {
+                ftp_login($this->connection, $user, $pass);
+            } catch(\Exception $e) {
+                throw new \Exception($e->getMessage());
             }
+            ftp_pasv($this->connection, true);
+            return true;
+
         }
-        return false;
+
+        throw new \Exception('Unable to establish connection to FTP server');
     }
 
     /**
@@ -180,12 +186,18 @@ class FTP
      */
     public function createDirectory($directory)
     {
-        return @ftp_mkdir($this->connection, $directory);
+        $dir = ftp_mkdir($this->connection, $directory);
+
+        if(!$dir) {
+            throw new \Exception('Unable to create directory '.$directory);
+        }
+
+        return true;
     }
 
     /**
      * Check if $directory actually is a directory
-     * 
+     *
      * @param $directory
      *
      * @return bool
