@@ -27,7 +27,7 @@ class FTP
             try {
                 ftp_login($this->connection, $user, $pass);
             } catch(\Exception $e) {
-                throw new \Exception($e);
+                throw new \Exception($e->getMessage());
             }
             ftp_pasv($this->connection, true);
             return true;

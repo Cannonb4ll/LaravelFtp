@@ -1,9 +1,9 @@
 {
-    "name": "machecek/laravel-ftp",
+    "name": "dennissmink/laravel-ftp",
     "authors": [
         {
-            "name": "Marek Toth",
-            "email": "scorpion909@gmail.com"
+            "name": "Dennis Smink",
+            "email": "dennissmink@gmail.com"
         }
     ],
     "require": {
