@@ -23,11 +23,17 @@ class FTP
         $this->mode = $mode;
 
         if ($this->connection = @ftp_connect($host, ($port != 21) ? $port : 21)) {
-            if (@ftp_login($this->connection, $user, $pass)) {
-                ftp_pasv($this->connection, true);
-                return true;
+            
+            try {
+                ftp_login($this->connection, $user, $pass);
+            } catch(\Exception $e) {
+                throw new \Exception($e);
             }
+            ftp_pasv($this->connection, true);
+            return true;
+            
         }
+        
         return false;
     }
 
