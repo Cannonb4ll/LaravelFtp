@@ -60,7 +60,18 @@ class FTP
     {
         return @ftp_size($this->connection, $file);
     }
-
+	
+	/**
+     * Returns the last modified time of the given file
+     *
+     * @param $file
+     * @return int
+     */
+    public function time($file)
+    {
+        return @ftp_mdtm($this->connection, $file);
+    }
+    
     /**
      * public function get
      *
