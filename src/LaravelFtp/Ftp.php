@@ -80,16 +80,17 @@ class FTP
      * public function get
      *
      *
-     * @param    string $file
+     * @param string $file
+     * @param int    $maxSize (in bytes)
      *
-     * @return   string
+     * @return string
      */
-    public function get($file = '')
+    public function get($file = '', $maxSize = 512000)
     {
         $tempHandle = fopen('php://temp', 'r+');
         $sizeFile = $this->size($file);
-        if ($sizeFile > 512000) { // 512 000 KB
-            return 'This file is too big to read, maximum filesize allowed to the browser: 512KB';
+        if ($sizeFile > $maxSize) {
+            return 'This file is too big to download.';
         } else {
             if (@ftp_fget($this->connection, $tempHandle, $file, $this->mode, 0)) {
                 rewind($tempHandle);
