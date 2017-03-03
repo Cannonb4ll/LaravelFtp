@@ -5,6 +5,7 @@ namespace LaravelFtp;
 class FTP
 {
     private $connection;
+
     private $mode;
 
     /**
@@ -16,8 +17,6 @@ class FTP
      * @param    string $pass
      * @param int       $port
      * @param int       $mode
-     *
-     * @throws \Exception
      */
     public function __construct($host, $user, $pass, $port = 21, $mode = FTP_ASCII)
     {
@@ -65,32 +64,19 @@ class FTP
     }
 
     /**
-     * Returns the last modified time of the given file
-     *
-     * @param $file
-     *
-     * @return int
-     */
-    public function time($file)
-    {
-        return @ftp_mdtm($this->connection, $file);
-    }
-
-    /**
      * public function get
      *
      *
-     * @param string $file
-     * @param int    $maxSize (in bytes)
+     * @param    string $file
      *
-     * @return string
+     * @return   string
      */
-    public function get($file = '', $maxSize = 512000)
+    public function get($file = '')
     {
         $tempHandle = fopen('php://temp', 'r+');
         $sizeFile = $this->size($file);
-        if ($sizeFile > $maxSize) {
-            return 'This file is too big to download.';
+        if ($sizeFile > 512000) { // 512 000 KB
+            return 'This file is too big to read, maximum filesize allowed to the browser: 512KB';
         } else {
             if (@ftp_fget($this->connection, $tempHandle, $file, $this->mode, 0)) {
                 rewind($tempHandle);
@@ -205,11 +191,10 @@ class FTP
      * @param $directory
      *
      * @return string
-     * @throws \Exception
      */
     public function createDirectory($directory)
     {
-        $dir = @ftp_mkdir($this->connection, $directory);
+        $dir = ftp_mkdir($this->connection, $directory);
 
         if (!$dir) {
             throw new \Exception('Unable to create directory ' . $directory);
@@ -348,4 +333,5 @@ class FTP
             return false;
         }
     }
+
 }
