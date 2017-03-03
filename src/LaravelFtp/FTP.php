@@ -5,7 +5,6 @@ namespace LaravelFtp;
 class FTP
 {
     private $connection;
-
     private $mode;
 
     /**
@@ -17,6 +16,8 @@ class FTP
      * @param    string $pass
      * @param int       $port
      * @param int       $mode
+     *
+     * @throws \Exception
      */
     public function __construct($host, $user, $pass, $port = 21, $mode = FTP_ASCII)
     {
@@ -26,7 +27,7 @@ class FTP
 
             try {
                 ftp_login($this->connection, $user, $pass);
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 throw new \Exception($e->getMessage());
             }
             ftp_pasv($this->connection, true);
@@ -42,6 +43,7 @@ class FTP
      *
      *
      * @param    string $directory
+     *
      * @return   string
      */
     public function all($directory = '')
@@ -54,6 +56,7 @@ class FTP
      *
      *
      * @param    string $file
+     *
      * @return   string
      */
     public function size($file = '')
@@ -66,6 +69,7 @@ class FTP
      *
      *
      * @param    string $file
+     *
      * @return   string
      */
     public function get($file = '')
@@ -116,6 +120,7 @@ class FTP
      *
      * @param $file
      * @param $content
+     *
      * @return bool
      */
     public function save($file, $content)
@@ -136,6 +141,7 @@ class FTP
      *
      * @param $old
      * @param $new
+     *
      * @return bool
      */
     public function rename($old, $new)
@@ -158,6 +164,7 @@ class FTP
      *
      * @param $directory
      * @param $name
+     *
      * @return bool
      */
     public function createFile($directory, $name)
@@ -171,6 +178,7 @@ class FTP
      * public function deleteFile
      *
      * @param $file
+     *
      * @return bool
      */
     public function deleteFile($file)
@@ -182,14 +190,16 @@ class FTP
      * Public function createDirectory
      *
      * @param $directory
-     * @return string
+     *
+     * @return boolean
+     * @throws \Exception
      */
     public function createDirectory($directory)
     {
         $dir = ftp_mkdir($this->connection, $directory);
 
-        if(!$dir) {
-            throw new \Exception('Unable to create directory '.$directory);
+        if (!$dir) {
+            throw new \Exception('Unable to create directory ' . $directory);
         }
 
         return true;
@@ -211,19 +221,23 @@ class FTP
         return false;
     }
 
+    /**
+     * @param $path
+     *
+     * @return bool
+     */
     public function createDirectoryRecursive($path)
     {
-        $dir=explode("/", $path);
-        $path="";
+        $dir = explode("/", $path);
+        $path = "";
         $ret = true;
 
-        for ($i=0;$i<count($dir);$i++)
-        {
-            $path.="/".$dir[$i];
-            if(!@ftp_chdir($this->connection,$path)){
-                @ftp_chdir($this->connection,"/");
-                if(!@ftp_mkdir($this->connection,$path)){
-                    $ret=false;
+        for ($i = 0; $i < count($dir); $i++) {
+            $path .= "/" . $dir[$i];
+            if (!@ftp_chdir($this->connection, $path)) {
+                @ftp_chdir($this->connection, "/");
+                if (!@ftp_mkdir($this->connection, $path)) {
+                    $ret = false;
                     break;
                 }
             }
@@ -235,6 +249,7 @@ class FTP
      * Public function deleteDirectory
      *
      * @param $directory
+     *
      * @return bool
      */
     public function deleteDirectory($directory)
@@ -275,6 +290,7 @@ class FTP
      * public function emptyDirectory
      *
      * @param $directory
+     *
      * @return bool
      */
     public function emptyDirectory($directory)
@@ -311,11 +327,13 @@ class FTP
      * public function uploadFile
      *
      *
-     * @param    string    $fileToUpload	Het bestand wat geupload moet worden
-     * @param    string    $fileUrl			Het relatieve pad
-     * @return   string             		Geeft true weer als het bestand geupload kon worden, anders false
+     * @param    string $fileToUpload
+     * @param    string $fileUrl
+     *
+     * @return   boolean
      */
-    public function uploadFile( $fileToUpload, $fileUrl){
+    public function uploadFile($fileToUpload, $fileUrl)
+    {
         if (@ftp_put($this->connection, $fileToUpload, $fileUrl, $this->mode)) {
             return true;
         } else {
