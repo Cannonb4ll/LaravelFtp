@@ -48,7 +48,13 @@ class FTP
      */
     public function all($directory = '')
     {
-        return collect(ftp_nlist($this->connection, $directory));
+        $files = @ftp_nlist($this->connection, $directory);
+
+        if (!$files) {
+            $files = [];
+        }
+
+        return collect($files);
     }
 
     /**
