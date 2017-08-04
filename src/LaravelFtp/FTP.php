@@ -202,11 +202,7 @@ class FTP
      */
     public function createDirectory($directory)
     {
-        $dir = ftp_mkdir($this->connection, $directory);
-
-        if (!$dir) {
-            throw new \Exception('Unable to create directory ' . $directory);
-        }
+        @ftp_mkdir($this->connection, $directory);
 
         return true;
     }
