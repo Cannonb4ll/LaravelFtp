@@ -26,7 +26,7 @@ class FTP
         if ($this->connection = @ftp_connect($host, ($port != 21) ? $port : 21)) {
 
             try {
-                ftp_login($this->connection, $user, $pass);
+                @ftp_login($this->connection, $user, $pass);
             } catch (\Exception $e) {
                 throw new \Exception($e->getMessage());
             }
