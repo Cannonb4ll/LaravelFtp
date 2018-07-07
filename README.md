@@ -60,6 +60,7 @@ $ftp->deleteDirectory('directory name'); // Removes a directory with the name 'd
 $ftp->emptyDirectory('directory name'); // Emptys a directory but keeps the directory itself
 ```
 
+
 ## Links
 
 Packagist: https://packagist.org/packages/dennissmink/laravel-ftp
